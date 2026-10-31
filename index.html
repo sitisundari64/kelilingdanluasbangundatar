@@ -1,0 +1,1217 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6655c9">
+<title>TKA Matematika Kelas IX | Belajar Interaktif</title>
+
+<!-- Library eksternal -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<script>
+tailwind.config = {
+ theme: {
+  extend: {
+   fontFamily: {
+    fredoka: ['Fredoka','sans-serif'],
+    nunito: ['Nunito','sans-serif']
+   },
+   colors: {
+    purple: {main:'#6957C8',light:'#EEEAFE'},
+    pink: {soft:'#FFE5EF'},
+    yellow: {soft:'#FFF3C4'},
+    mint: {soft:'#DDF8EF'}
+   }
+  }
+ }
+}
+</script>
+
+<style>
+*{box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:#F7F7FC;color:#302C4D}
+h1,h2,h3,.heading{font-family:'Fredoka',sans-serif}
+button{transition:.2s}
+button:active{transform:scale(.97)}
+.navbtn{display:flex;align-items:center;gap:9px;padding:12px 15px;border-radius:14px;font-weight:800;color:#77718e;white-space:nowrap}
+.navbtn:hover,.navbtn.active{background:#eeeafe;color:#6957c8}
+.page{display:none;animation:fade .35s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:white;border:1px solid #efedf6;border-radius:23px;padding:22px;box-shadow:0 5px 20px rgba(75,60,120,.045)}
+.btn-main{background:#6957c8;color:white;border-radius:14px;padding:12px 22px;font-weight:900;box-shadow:0 5px 0 #4c3ba3}
+.btn-main:hover{background:#5846b7;transform:translateY(-2px)}
+.btn-soft{background:#eeeafe;color:#6957c8;border-radius:13px;padding:11px 18px;font-weight:900}
+.tab{padding:10px 16px;border-radius:12px;background:#f2f0fa;color:#77718e;font-weight:900}
+.tab.active{background:#6957c8;color:white}
+.option{width:100%;text-align:left;padding:14px 16px;border:2px solid #eceaf3;border-radius:14px;margin:7px 0;font-weight:800;background:white}
+.option:hover{border-color:#a89be8;background:#f8f6ff}
+.option.correct{background:#ddf8ef;border-color:#35b78a;color:#147653}
+.option.wrong{background:#ffe5e9;border-color:#ed7182;color:#b63851}
+.progress{height:10px;background:#eeeaf6;border-radius:20px;overflow:hidden}
+.progress>div{height:100%;background:linear-gradient(90deg,#6957c8,#e58bbd);transition:width .3s}
+.sticky{background:#fff4bd;padding:15px;border-radius:5px 5px 18px 5px;box-shadow:2px 4px 9px #00000012;transform:rotate(-1deg)}
+.sticky:nth-child(even){background:#dff8ed;transform:rotate(1deg)}
+.sticky:nth-child(3n){background:#ffe5ef}
+.form-input{width:100%;border:2px solid #eceaf3;border-radius:12px;padding:12px 14px;outline:none;font-weight:700}
+.form-input:focus{border-color:#9384dd}
+.subtab{display:none}
+.subtab.active{display:block;animation:fade .3s}
+.bubble{border-radius:25px 25px 25px 5px}
+.math{font-family:'Fredoka',sans-serif;color:#6957c8}
+@media(max-width:640px){
+ .card{padding:17px}
+ .navbtn{padding:10px 12px;font-size:13px}
+ .hero-title{font-size:32px!important}
+}
+@media print{
+ body *{visibility:hidden}
+ #certificate,#certificate *{visibility:visible}
+ #certificate{position:absolute;inset:0;width:100%;display:block!important}
+ .no-print{display:none!important}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="bg-white sticky top-0 z-40 shadow-sm border-b border-purple-100">
+ <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+  <div class="flex items-center gap-3">
+   <div class="w-11 h-11 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center text-xl">
+    <i class="fa-solid fa-compass-drafting"></i>
+   </div>
+   <div>
+    <h1 class="font-fredoka text-lg md:text-xl text-purple-700">Math Adventure</h1>
+    <p class="text-xs text-gray-500 font-bold">TKA Matematika • Kelas IX</p>
+   </div>
+  </div>
+  <div class="flex gap-2 items-center">
+   <button onclick="showPage('home')" class="btn-soft text-sm hidden sm:block">
+    <i class="fa-solid fa-house mr-1"></i> Menu Utama
+   </button>
+   <button onclick="toggleAudio()" id="audioBtn" class="bg-mint-soft text-green-700 rounded-xl px-3 py-2 font-extrabold text-sm">
+    <i class="fa-solid fa-volume-high"></i> Audio ON
+   </button>
+  </div>
+ </div>
+</header>
+
+<!-- NAVIGATION -->
+<div class="bg-white border-b overflow-x-auto">
+ <nav class="max-w-7xl mx-auto px-3 py-2 flex gap-1">
+  <button class="navbtn active" data-page="home" onclick="showPage('home')"><i class="fa-solid fa-house"></i> Home</button>
+  <button class="navbtn" data-page="tujuan" onclick="showPage('tujuan')"><i class="fa-solid fa-bullseye"></i> Tujuan</button>
+  <button class="navbtn" data-page="pemantik" onclick="showPage('pemantik')"><i class="fa-regular fa-lightbulb"></i> Pemantik</button>
+  <button class="navbtn" data-page="materi" onclick="showPage('materi')"><i class="fa-solid fa-book-open"></i> Materi</button>
+  <button class="navbtn" data-page="simulasi" onclick="showPage('simulasi')"><i class="fa-solid fa-calculator"></i> Simulasi</button>
+  <button class="navbtn" data-page="kuis" onclick="showPage('kuis')"><i class="fa-solid fa-clipboard-check"></i> Kuis</button>
+  <button class="navbtn" data-page="games" onclick="showPage('games')"><i class="fa-solid fa-gamepad"></i> Games</button>
+  <button class="navbtn" data-page="kesimpulan" onclick="showPage('kesimpulan')"><i class="fa-solid fa-star"></i> Kesimpulan</button>
+  <button class="navbtn" data-page="refleksi" onclick="showPage('refleksi')"><i class="fa-solid fa-note-sticky"></i> Refleksi</button>
+ </nav>
+</div>
+
+<main class="max-w-7xl mx-auto px-4 py-7">
+
+<!-- HOME -->
+<section id="home" class="page active">
+ <div class="rounded-[30px] overflow-hidden bg-gradient-to-br from-[#e9e4ff] via-[#f9e9f2] to-[#dff8ed] p-6 md:p-12 relative">
+  <div class="grid md:grid-cols-2 gap-8 items-center">
+   <div class="relative z-10">
+    <span class="bg-white text-purple-700 px-4 py-2 rounded-full text-xs font-black tracking-wide">✨ TKA MATEMATIKA • SMP KELAS IX</span>
+    <h2 class="hero-title text-4xl md:text-5xl font-fredoka font-bold mt-6 leading-tight text-[#45377f]">
+     Jelajahi Dunia<br><span class="text-pink-500">Lingkaran &</span><br>Bangun Datar!
+    </h2>
+    <p class="mt-5 text-gray-600 font-bold leading-relaxed max-w-lg">
+     Belajar memahami, menghitung, membandingkan, dan bernalar tentang keliling serta luas bangun datar melalui petualangan matematika interaktif.
+    </p>
+    <div class="flex flex-wrap gap-3 mt-7">
+     <button onclick="showPage('materi')" class="btn-main"><i class="fa-solid fa-rocket mr-2"></i>Mulai Belajar</button>
+     <button onclick="showPage('simulasi')" class="btn-soft"><i class="fa-solid fa-play mr-2"></i>Coba Simulasi</button>
+    </div>
+    <div class="flex gap-5 mt-7 text-sm font-extrabold text-purple-700">
+     <span><i class="fa-solid fa-book-open mr-1"></i> Materi</span>
+     <span><i class="fa-solid fa-gamepad mr-1"></i> Games</span>
+     <span><i class="fa-solid fa-trophy mr-1"></i> Tantangan</span>
+    </div>
+   </div>
+   <div class="flex justify-center">
+    <div class="relative w-full max-w-md">
+     <div class="absolute inset-5 bg-white opacity-40 blur-3xl rounded-full"></div>
+     <svg viewBox="0 0 500 380" class="relative w-full drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="250" cy="180" r="132" fill="#fff" opacity=".7"/>
+      <circle cx="250" cy="180" r="105" fill="#bbaef5"/>
+      <path d="M250 180 L250 75 A105 105 0 0 1 341 232 Z" fill="#f29ac2"/>
+      <circle cx="250" cy="180" r="7" fill="#493c88"/>
+      <path d="M250 180 L250 75 M250 180 L341 232" stroke="#493c88" stroke-width="4"/>
+      <path d="M250 75 A105 105 0 0 1 341 232" fill="none" stroke="#493c88" stroke-width="5"/>
+      <text x="292" y="140" font-size="19" font-weight="bold" fill="#513d86">Juring</text>
+      <text x="188" y="195" font-size="16" font-weight="bold" fill="#fff">r</text>
+      <path d="M90 300 L150 245 L210 300 Z" fill="#ffd96c" stroke="#6957c8" stroke-width="4"/>
+      <rect x="330" y="270" width="95" height="65" rx="7" fill="#91ddc5" stroke="#6957c8" stroke-width="4"/>
+      <path d="M40 80 l12 -25 l12 25 l25 12 l-25 12 l-12 25 l-12 -25 l-25 -12z" fill="#f6bf5c"/>
+      <circle cx="410" cy="80" r="13" fill="#f29ac2"/>
+      <circle cx="435" cy="100" r="7" fill="#6957c8"/>
+      <text x="250" y="360" text-anchor="middle" font-size="18" font-weight="bold" fill="#493c88">Matematika Itu Seru!</text>
+     </svg>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-7">
+  <div class="card text-center"><div class="text-3xl">📐</div><h3 class="font-fredoka text-lg mt-2">Bangun Datar</h3><p class="text-xs text-gray-500 font-bold">Keliling & luas</p></div>
+  <div class="card text-center"><div class="text-3xl">⭕</div><h3 class="font-fredoka text-lg mt-2">Lingkaran</h3><p class="text-xs text-gray-500 font-bold">Busur & juring</p></div>
+  <div class="card text-center"><div class="text-3xl">🧠</div><h3 class="font-fredoka text-lg mt-2">Bernalar</h3><p class="text-xs text-gray-500 font-bold">HOTS & problem solving</p></div>
+  <div class="card text-center"><div class="text-3xl">🏆</div><h3 class="font-fredoka text-lg mt-2">Tantangan</h3><p class="text-xs text-gray-500 font-bold">Kuis & permainan</p></div>
+ </div>
+
+ <div class="card mt-7">
+  <h3 class="font-fredoka text-xl text-purple-700 mb-4"><i class="fa-solid fa-map mr-2"></i>Peta Petualangan Belajar</h3>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+   <button onclick="showPage('tujuan')" class="btn-soft"><i class="fa-solid fa-bullseye mr-2"></i>Tujuan Belajar</button>
+   <button onclick="showPage('pemantik')" class="btn-soft"><i class="fa-solid fa-lightbulb mr-2"></i>Pemantik</button>
+   <button onclick="showPage('materi')" class="btn-soft"><i class="fa-solid fa-book mr-2"></i>Materi</button>
+   <button onclick="showPage('simulasi')" class="btn-soft"><i class="fa-solid fa-calculator mr-2"></i>Simulasi</button>
+   <button onclick="showPage('kuis')" class="btn-soft"><i class="fa-solid fa-pen mr-2"></i>Kuis</button>
+   <button onclick="showPage('games')" class="btn-soft"><i class="fa-solid fa-puzzle-piece mr-2"></i>Games</button>
+   <button onclick="showPage('kesimpulan')" class="btn-soft"><i class="fa-solid fa-star mr-2"></i>Kesimpulan</button>
+   <button onclick="showPage('refleksi')" class="btn-soft"><i class="fa-solid fa-comment mr-2"></i>Refleksi</button>
+  </div>
+ </div>
+
+ <div class="card mt-6 bg-[#fff9e7]">
+  <h3 class="font-fredoka text-xl text-yellow-700"><i class="fa-solid fa-circle-info mr-2"></i>Petunjuk Penggunaan</h3>
+  <ol class="list-decimal ml-6 mt-3 space-y-2 text-sm font-bold text-gray-600">
+   <li>Mulailah dengan membaca tujuan pembelajaran.</li>
+   <li>Jawab pertanyaan pemantik berdasarkan pengalaman sehari-hari.</li>
+   <li>Pelajari materi melalui tab yang tersedia.</li>
+   <li>Gunakan simulasi untuk mencoba perubahan sudut dan jari-jari.</li>
+   <li>Kerjakan kuis dari level mudah hingga sulit.</li>
+   <li>Mainkan games dan tuliskan refleksi pembelajaran.</li>
+  </ol>
+ </div>
+</section>
+
+<!-- TUJUAN -->
+<section id="tujuan" class="page">
+ <div class="mb-6">
+  <span class="text-purple-600 font-black text-sm">01 / LEARNING OBJECTIVES</span>
+  <h2 class="text-3xl font-fredoka font-bold mt-2">🎯 Tujuan Pembelajaran</h2>
+  <p class="text-gray-500 font-bold mt-2">Kompetensi yang akan kamu kuasai dalam petualangan ini.</p>
+ </div>
+ <div class="grid md:grid-cols-2 gap-4">
+  <div class="card border-l-4 border-purple-400">
+   <div class="text-3xl">📘</div><h3 class="font-fredoka text-xl mt-3">Memahami Konsep</h3>
+   <p class="text-gray-600 mt-2 font-semibold">Mengidentifikasi unsur, sifat, rumus keliling dan luas bangun datar serta lingkaran, termasuk juring dan busur.</p>
+  </div>
+  <div class="card border-l-4 border-pink-400">
+   <div class="text-3xl">🧮</div><h3 class="font-fredoka text-xl mt-3">Mengaplikasikan</h3>
+   <p class="text-gray-600 mt-2 font-semibold">Menghitung keliling dan luas segi banyak, lingkaran, serta bangun gabungan dalam permasalahan kontekstual.</p>
+  </div>
+  <div class="card border-l-4 border-yellow-400">
+   <div class="text-3xl">⭕</div><h3 class="font-fredoka text-xl mt-3">Membandingkan</h3>
+   <p class="text-gray-600 mt-2 font-semibold">Membandingkan luas juring dan panjang busur berdasarkan besar sudut pusat, jari-jari, atau komponen lain yang diketahui.</p>
+  </div>
+  <div class="card border-l-4 border-green-400">
+   <div class="text-3xl">🧠</div><h3 class="font-fredoka text-xl mt-3">Bernalar Matematis</h3>
+   <p class="text-gray-600 mt-2 font-semibold">Menganalisis strategi penyelesaian, menafsirkan hasil, serta menyelesaikan masalah nonrutin yang melibatkan bangun datar dan lingkaran.</p>
+  </div>
+ </div>
+ <div class="card mt-6 bg-purple-50">
+  <h3 class="font-fredoka text-xl text-purple-700">🌟 Mengapa Materi Ini Penting?</h3>
+  <p class="mt-3 text-gray-600 font-semibold leading-relaxed">Konsep ini digunakan untuk menentukan kebutuhan pagar taman, luas lantai, desain pizza, lintasan roda, kolam berbentuk gabungan, hingga perancangan benda melingkar. Matematika membantu kita mengambil keputusan secara logis dan efisien.</p>
+ </div>
+</section>
+
+<!-- PEMANTIK -->
+<section id="pemantik" class="page">
+ <span class="text-purple-600 font-black text-sm">02 / THINK & WONDER</span>
+ <h2 class="text-3xl font-fredoka font-bold mt-2 mb-3">💡 Pertanyaan Pemantik</h2>
+ <p class="text-gray-500 font-bold mb-6">Amati situasi berikut. Klik kartu untuk mengungkap pertanyaan.</p>
+
+ <div class="grid md:grid-cols-2 gap-5">
+  <div class="card bg-pink-50">
+   <div class="text-5xl text-center py-5">🍕</div>
+   <h3 class="font-fredoka text-xl text-pink-700">Misteri Pizza</h3>
+   <p class="text-gray-600 font-bold mt-2">Dua pizza memiliki ukuran sama. Pizza A dipotong menjadi 4 bagian sama besar, sedangkan pizza B menjadi 8 bagian sama besar.</p>
+   <button class="btn-main mt-5 w-full" onclick="reveal('q1')">Buka Pertanyaan ✨</button>
+   <div id="q1" class="hidden mt-4 bg-white p-4 rounded-xl">
+    <p class="font-extrabold text-purple-700">Apakah luas satu potong pizza A lebih besar daripada satu potong pizza B? Mengapa?</p>
+    <p class="text-sm mt-2 text-gray-600">Petunjuk: Perhatikan besar sudut pusat setiap potongan.</p>
+   </div>
+  </div>
+  <div class="card bg-mint-soft">
+   <div class="text-5xl text-center py-5">🎡</div>
+   <h3 class="font-fredoka text-xl text-green-700">Roda Berputar</h3>
+   <p class="text-gray-600 font-bold mt-2">Dua roda memiliki jari-jari berbeda. Keduanya berputar dengan sudut pusat yang sama.</p>
+   <button class="btn-main mt-5 w-full" onclick="reveal('q2')">Buka Pertanyaan ✨</button>
+   <div id="q2" class="hidden mt-4 bg-white p-4 rounded-xl">
+    <p class="font-extrabold text-purple-700">Apakah panjang lintasan busur kedua roda sama? Apa pengaruh jari-jari?</p>
+    <p class="text-sm mt-2 text-gray-600">Petunjuk: Bandingkan panjang busur terhadap keliling lingkaran.</p>
+   </div>
+  </div>
+ </div>
+
+ <div class="card mt-6">
+  <h3 class="font-fredoka text-xl">🧘 Mindful Moment – Siap Bernalar?</h3>
+  <p class="text-gray-600 font-bold mt-2">Tarik napas perlahan, fokuskan pikiran, lalu amati benda berbentuk lingkaran di sekitarmu.</p>
+  <button onclick="mindful()" class="btn-soft mt-4"><i class="fa-solid fa-heart mr-2"></i>Mulai 10 Detik Fokus</button>
+  <p id="mindfulText" class="text-purple-700 font-extrabold mt-3"></p>
+ </div>
+</section>
+
+<!-- MATERI -->
+<section id="materi" class="page">
+ <span class="text-purple-600 font-black text-sm">03 / EXPLORE THE CONCEPT</span>
+ <h2 class="text-3xl font-fredoka font-bold mt-2">📚 Materi Belajar Interaktif</h2>
+ <p class="text-gray-500 font-bold mt-2 mb-5">Pelajari konsep, amati rumus, dan pahami penerapannya.</p>
+
+ <div class="flex flex-wrap gap-2 mb-5">
+  <button class="tab active" onclick="materialTab('m1',this)">Segi Banyak</button>
+  <button class="tab" onclick="materialTab('m2',this)">Lingkaran</button>
+  <button class="tab" onclick="materialTab('m3',this)">Juring</button>
+  <button class="tab" onclick="materialTab('m4',this)">Busur</button>
+  <button class="tab" onclick="materialTab('m5',this)">Bangun Gabungan</button>
+  <button class="tab" onclick="materialTab('m6',this)">Strategi HOTS</button>
+ </div>
+
+ <div id="m1" class="subtab active">
+  <div class="card">
+   <h3 class="font-fredoka text-2xl text-purple-700">1. Keliling dan Luas Segi Banyak</h3>
+   <div class="grid md:grid-cols-2 gap-5 mt-5 items-center">
+    <div>
+     <svg viewBox="0 0 320 210" class="w-full max-w-sm mx-auto">
+      <polygon points="80,35 230,35 275,150 35,150" fill="#d9d0ff" stroke="#6957c8" stroke-width="4"/>
+      <text x="155" y="22" text-anchor="middle" fill="#6957c8" font-size="15" font-weight="bold">Panjang</text>
+      <text x="285" y="100" fill="#6957c8" font-size="13">Lebar</text>
+     </svg>
+    </div>
+    <div>
+     <p class="font-bold text-gray-600">Keliling adalah jumlah panjang seluruh sisi bangun. Luas adalah ukuran daerah yang ditempati bangun.</p>
+     <div class="bg-purple-50 rounded-xl p-4 mt-3">
+      <p class="math text-xl">Persegi: K = 4s</p>
+      <p class="math text-xl">L = s × s</p>
+      <hr class="my-2 border-purple-200">
+      <p class="math text-xl">Persegi panjang: K = 2(p+l)</p>
+      <p class="math text-xl">L = p × l</p>
+     </div>
+    </div>
+   </div>
+   <div class="bg-yellow-50 p-4 rounded-xl mt-4">
+    <b>Contoh:</b> Sebuah taman persegi panjang berukuran 12 m × 8 m. Kelilingnya = 2(12+8) = 40 m. Luasnya = 12 × 8 = 96 m².
+   </div>
+  </div>
+ </div>
+
+ <div id="m2" class="subtab">
+  <div class="card">
+   <h3 class="font-fredoka text-2xl text-purple-700">2. Unsur, Keliling, dan Luas Lingkaran</h3>
+   <div class="grid md:grid-cols-2 gap-4 items-center">
+    <svg viewBox="0 0 300 260" class="w-full max-w-xs mx-auto">
+     <circle cx="130" cy="125" r="95" fill="#f2edff" stroke="#6957c8" stroke-width="4"/>
+     <circle cx="130" cy="125" r="5" fill="#6957c8"/>
+     <line x1="130" y1="125" x2="225" y2="125" stroke="#ed8ab8" stroke-width="5"/>
+     <line x1="35" y1="125" x2="225" y2="125" stroke="#6957c8" stroke-width="3"/>
+     <text x="170" y="112" fill="#b94f87" font-weight="bold" font-size="15">r</text>
+     <text x="125" y="146" fill="#6957c8" font-size="13">O</text>
+     <text x="130" y="245" fill="#6957c8" text-anchor="middle" font-size="14" font-weight="bold">d = 2r</text>
+    </svg>
+    <div>
+     <p class="font-bold text-gray-600">Unsur lingkaran meliputi titik pusat, jari-jari, diameter, busur, tali busur, dan juring.</p>
+     <div class="bg-purple-50 p-4 rounded-xl mt-3">
+      <p class="math text-2xl">K = 2πr = πd</p>
+      <p class="math text-2xl">L = πr²</p>
+     </div>
+     <p class="text-sm mt-3 font-bold text-gray-500">Gunakan π = 22/7 jika jari-jari kelipatan 7, atau 3,14 untuk perhitungan lainnya.</p>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div id="m3" class="subtab">
+  <div class="card">
+   <h3 class="font-fredoka text-2xl text-purple-700">3. Luas Juring</h3>
+   <div class="grid md:grid-cols-2 gap-4 items-center">
+    <svg viewBox="0 0 300 260" class="w-full max-w-xs mx-auto">
+     <circle cx="130" cy="125" r="100" fill="#f0ecff" stroke="#6957c8" stroke-width="3"/>
+     <path d="M130 125 L130 25 A100 100 0 0 1 216.6 175 Z" fill="#f19bc3" stroke="#b84d83" stroke-width="2"/>
+     <line x1="130" y1="125" x2="130" y2="25" stroke="#6957c8" stroke-width="3"/>
+     <line x1="130" y1="125" x2="216.6" y2="175" stroke="#6957c8" stroke-width="3"/>
+     <text x="145" y="110" fill="#6957c8" font-size="16" font-weight="bold">θ</text>
+     <text x="180" y="100" fill="#9e3b70" font-size="15" font-weight="bold">Juring</text>
+     <text x="125" y="140" fill="#6957c8" font-size="12">O</text>
+    </svg>
+    <div>
+     <p class="font-bold text-gray-600">Juring adalah daerah yang dibatasi dua jari-jari dan satu busur lingkaran.</p>
+     <div class="bg-pink-50 p-4 rounded-xl mt-3">
+      <p class="math text-xl">L juring = θ/360° × πr²</p>
+      <p class="math text-xl mt-2">Perbandingan:</p>
+      <p class="math text-lg">L₁ : L₂ = θ₁ : θ₂</p>
+     </div>
+    </div>
+   </div>
+   <div class="bg-yellow-50 p-4 rounded-xl mt-4">
+    <b>Contoh:</b> Lingkaran berjari-jari 14 cm memiliki juring bersudut 90°. Luas juring = 90/360 × 22/7 × 14² = 154 cm².
+   </div>
+  </div>
+ </div>
+
+ <div id="m4" class="subtab">
+  <div class="card">
+   <h3 class="font-fredoka text-2xl text-purple-700">4. Panjang Busur</h3>
+   <p class="font-bold text-gray-600 mt-2">Busur adalah bagian lengkung dari keliling lingkaran yang dibatasi dua titik.</p>
+   <div class="bg-purple-50 p-5 rounded-xl mt-4">
+    <p class="math text-2xl text-center">Panjang busur = θ/360° × 2πr</p>
+   </div>
+   <div class="grid md:grid-cols-2 gap-4 mt-5">
+    <div class="bg-mint-soft rounded-xl p-4">
+     <h4 class="font-fredoka text-lg">Perbandingan busur</h4>
+     <p class="math text-xl mt-2">s₁ : s₂ = θ₁ : θ₂</p>
+     <p class="text-sm font-bold text-gray-600 mt-2">Jika jari-jari kedua lingkaran sama.</p>
+    </div>
+    <div class="bg-pink-50 rounded-xl p-4">
+     <h4 class="font-fredoka text-lg">Perbandingan umum</h4>
+     <p class="math text-xl mt-2">s₁ : s₂ = θ₁r₁ : θ₂r₂</p>
+     <p class="text-sm font-bold text-gray-600 mt-2">Jika sudut atau jari-jari berbeda.</p>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div id="m5" class="subtab">
+  <div class="card">
+   <h3 class="font-fredoka text-2xl text-purple-700">5. Bangun Datar Gabungan</h3>
+   <p class="font-bold text-gray-600 mt-2">Bangun gabungan terdiri dari dua atau lebih bangun datar. Pecah bangun menjadi bagian sederhana, hitung luas masing-masing, kemudian jumlahkan atau kurangkan sesuai kebutuhan.</p>
+   <svg viewBox="0 0 340 190" class="w-full max-w-md mx-auto mt-4">
+    <rect x="30" y="75" width="170" height="85" rx="2" fill="#b9aaf4" stroke="#6957c8" stroke-width="3"/>
+    <path d="M200 160 A85 85 0 0 1 200  -10" fill="#f5a9cc" stroke="#c75d91" stroke-width="3"/>
+    <path d="M200 75 L285 75" stroke="#6957c8" stroke-width="2"/>
+    <text x="110" y="125" font-size="16" fill="#fff" text-anchor="middle" font-weight="bold">Persegi panjang</text>
+    <text x="245" y="85" font-size="12" fill="#913f6b">Setengah</text>
+    <text x="245" y="100" font-size="12" fill="#913f6b">lingkaran</text>
+   </svg>
+   <div class="bg-yellow-50 rounded-xl p-4">
+    <b>Strategi:</b>
+    <ol class="list-decimal ml-6 mt-2 font-bold text-gray-600 space-y-1">
+     <li>Identifikasi bentuk penyusun.</li>
+     <li>Tentukan ukuran setiap bagian.</li>
+     <li>Pilih rumus yang sesuai.</li>
+     <li>Jumlahkan atau kurangkan luas sesuai bentuk.</li>
+     <li>Periksa satuan dan kewajaran hasil.</li>
+    </ol>
+   </div>
+  </div>
+ </div>
+
+ <div id="m6" class="subtab">
+  <div class="card">
+   <h3 class="font-fredoka text-2xl text-purple-700">6. Strategi Bernalar Tingkat Tinggi (HOTS)</h3>
+   <div class="space-y-4 mt-4">
+    <div class="bg-purple-50 p-4 rounded-xl"><b>Analisis:</b><p class="text-gray-600 font-semibold mt-1">Apa yang berubah jika jari-jari menjadi dua kali lipat? Bagaimana perubahan luasnya?</p></div>
+    <div class="bg-pink-50 p-4 rounded-xl"><b>Evaluasi:</b><p class="text-gray-600 font-semibold mt-1">Apakah dua juring dengan sudut berbeda selalu memiliki luas berbeda? Jelaskan berdasarkan jari-jarinya.</p></div>
+    <div class="bg-mint-soft p-4 rounded-xl"><b>Penalaran:</b><p class="text-gray-600 font-semibold mt-1">Jika sudut pusat tetap tetapi jari-jari dilipatgandakan, bagaimana perbandingan panjang busur dan luas juring?</p></div>
+   </div>
+   <div class="bg-yellow-50 p-4 rounded-xl mt-4">
+    <b>Ingat!</b> Panjang busur sebanding dengan jari-jari, sedangkan luas juring sebanding dengan kuadrat jari-jari apabila sudut pusatnya sama.
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- SIMULASI -->
+<section id="simulasi" class="page">
+ <span class="text-purple-600 font-black text-sm">04 / VIRTUAL LAB</span>
+ <h2 class="text-3xl font-fredoka font-bold mt-2">🧪 Laboratorium Lingkaran</h2>
+ <p class="text-gray-500 font-bold mt-2 mb-5">Ubah nilai sudut dan jari-jari, lalu amati bagaimana hasil perhitungan berubah.</p>
+
+ <div class="grid lg:grid-cols-2 gap-5">
+  <div class="card">
+   <h3 class="font-fredoka text-xl text-purple-700">Eksperimen Juring & Busur</h3>
+   <div class="mt-5">
+    <label class="font-extrabold">Jari-jari: <span id="radiusLabel" class="text-purple-700">14</span> cm</label>
+    <input id="radius" type="range" min="1" max="30" value="14" class="w-full mt-3 accent-purple-600" oninput="updateSimulation()">
+    <label class="font-extrabold block mt-5">Sudut pusat: <span id="angleLabel" class="text-purple-700">90</span>°</label>
+    <input id="angle" type="range" min="10" max="360" step="10" value="90" class="w-full mt-3 accent-purple-600" oninput="updateSimulation()">
+   </div>
+   <div class="bg-purple-50 rounded-2xl p-3 mt-5">
+    <svg id="simCircle" viewBox="0 0 320 320" class="w-full max-w-xs mx-auto"></svg>
+   </div>
+   <button onclick="resetSimulation()" class="btn-soft mt-4 w-full"> <i class="fa-solid fa-rotate-left mr-2"></i>Reset Eksperimen</button>
+  </div>
+
+  <div class="card">
+   <h3 class="font-fredoka text-xl text-purple-700">Hasil Eksperimen</h3>
+   <div class="grid grid-cols-2 gap-3 mt-5">
+    <div class="bg-pink-50 p-4 rounded-xl"><p class="text-xs font-extrabold text-gray-500">LUAS LINGKARAN</p><p id="fullArea" class="font-fredoka text-2xl text-pink-700">615,75</p><p class="text-xs font-bold">cm²</p></div>
+    <div class="bg-purple-50 p-4 rounded-xl"><p class="text-xs font-extrabold text-gray-500">KELILING</p><p id="fullCirc" class="font-fredoka text-2xl text-purple-700">87,92</p><p class="text-xs font-bold">cm</p></div>
+    <div class="bg-mint-soft p-4 rounded-xl"><p class="text-xs font-extrabold text-gray-500">LUAS JURING</p><p id="sectorArea" class="font-fredoka text-2xl text-green-700">153,94</p><p class="text-xs font-bold">cm²</p></div>
+    <div class="bg-yellow-50 p-4 rounded-xl"><p class="text-xs font-extrabold text-gray-500">PANJANG BUSUR</p><p id="arcLength" class="font-fredoka text-2xl text-yellow-700">21,99</p><p class="text-xs font-bold">cm</p></div>
+   </div>
+   <div class="bg-gray-50 rounded-xl p-4 mt-5">
+    <h4 class="font-fredoka text-lg">💡 Analisis Otomatis</h4>
+    <p id="simInsight" class="text-gray-600 font-bold mt-2 text-sm"></p>
+   </div>
+   <div class="bg-pink-50 rounded-xl p-4 mt-4">
+    <b class="text-pink-700">Tantangan:</b>
+    <p class="text-sm font-bold mt-2">Jika jari-jari dilipatgandakan sementara sudut tetap, berapa kali luas juring dan panjang busur berubah?</p>
+   </div>
+  </div>
+ </div>
+
+ <div class="card mt-6">
+  <h3 class="font-fredoka text-xl">🔍 Eksperimen Perbandingan Dua Lingkaran</h3>
+  <p class="text-sm text-gray-500 font-bold mt-2">Bandingkan dua juring dengan ukuran berbeda.</p>
+  <div class="grid md:grid-cols-2 gap-4 mt-4">
+   <div><label class="font-bold">Lingkaran A – r (cm)</label><input id="ra" class="form-input mt-2" type="number" value="7" min="1" max="100"></div>
+   <div><label class="font-bold">Lingkaran A – sudut (°)</label><input id="aa" class="form-input mt-2" type="number" value="90" min="1" max="360"></div>
+   <div><label class="font-bold">Lingkaran B – r (cm)</label><input id="rb" class="form-input mt-2" type="number" value="14" min="1" max="100"></div>
+   <div><label class="font-bold">Lingkaran B – sudut (°)</label><input id="ab" class="form-input mt-2" type="number" value="90" min="1" max="360"></div>
+  </div>
+  <button onclick="compareCircles()" class="btn-main mt-4 w-full">Bandingkan Sekarang</button>
+  <div id="compareResult" class="mt-4"></div>
+ </div>
+</section>
+
+<!-- KUIS -->
+<section id="kuis" class="page">
+ <span class="text-purple-600 font-black text-sm">05 / KNOWLEDGE CHALLENGE</span>
+ <h2 class="text-3xl font-fredoka font-bold mt-2">🏆 Kuis TKA Matematika</h2>
+ <p class="text-gray-500 font-bold mt-2 mb-5">Pilih tingkat tantanganmu. Setiap level terdiri atas 10 soal.</p>
+
+ <div id="quizStart" class="card">
+  <h3 class="font-fredoka text-2xl text-purple-700">Siap Menjadi Math Champion?</h3>
+  <label class="block font-extrabold mt-5 mb-2">Nama untuk sertifikat</label>
+  <input id="studentName" class="form-input" placeholder="Tuliskan nama lengkapmu...">
+  <p class="text-xs text-gray-400 font-bold mt-2">Nama akan ditampilkan pada sertifikat hasil kuis.</p>
+  <div class="grid md:grid-cols-3 gap-4 mt-6">
+   <button onclick="startQuiz('easy')" class="card bg-mint-soft text-center hover:scale-105">
+    <div class="text-4xl">🌱</div><h3 class="font-fredoka text-xl mt-2">MUDAH</h3><p class="text-xs font-bold text-gray-600">Pemahaman dasar</p>
+   </button>
+   <button onclick="startQuiz('medium')" class="card bg-yellow-50 text-center hover:scale-105">
+    <div class="text-4xl">🔥</div><h3 class="font-fredoka text-xl mt-2">SEDANG</h3><p class="text-xs font-bold text-gray-600">Penerapan konsep</p>
+   </button>
+   <button onclick="startQuiz('hard')" class="card bg-pink-50 text-center hover:scale-105">
+    <div class="text-4xl">🚀</div><h3 class="font-fredoka text-xl mt-2">SULIT</h3><p class="text-xs font-bold text-gray-600">Penalaran HOTS</p>
+   </button>
+  </div>
+ </div>
+
+ <div id="quizPlay" class="hidden">
+  <div class="card mb-4">
+   <div class="flex justify-between gap-2 items-center">
+    <div><p class="text-xs text-gray-500 font-black">LEVEL <span id="quizLevel"></span></p><h3 class="font-fredoka text-xl">Math Challenge</h3></div>
+    <div class="text-right"><p class="text-xs text-gray-500 font-bold">SKOR SAAT INI</p><p id="quizScore" class="font-fredoka text-2xl text-purple-700">0</p></div>
+   </div>
+   <div class="progress mt-4"><div id="quizProgress" style="width:0%"></div></div>
+   <div class="flex justify-between text-xs font-bold text-gray-500 mt-2"><span id="quizCounter">Soal 1/10</span><span id="quizPercentage">0%</span></div>
+  </div>
+  <div class="card">
+   <div class="flex justify-between items-center gap-2">
+    <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-black" id="questionTag">SOAL 1</span>
+    <button onclick="exitQuiz()" class="text-red-500 font-extrabold text-sm"><i class="fa-solid fa-right-from-bracket mr-1"></i>Keluar / Ganti Level</button>
+   </div>
+   <h3 id="questionText" class="font-fredoka text-xl md:text-2xl mt-5 leading-relaxed"></h3>
+   <div id="questionOptions" class="mt-4"></div>
+   <div id="feedback" class="hidden p-4 rounded-xl mt-4"></div>
+   <button id="nextQuestion" onclick="nextQuizQuestion()" class="btn-main w-full mt-5 hidden">Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i></button>
+  </div>
+ </div>
+
+ <div id="quizResult" class="hidden">
+  <div class="card text-center">
+   <div class="text-6xl">🏆</div>
+   <h3 class="font-fredoka text-3xl text-purple-700 mt-3">Tantangan Selesai!</h3>
+   <p id="resultName" class="font-extrabold mt-3"></p>
+   <p id="resultLevel" class="text-sm font-bold text-gray-500 mt-1"></p>
+   <div class="grid grid-cols-3 gap-3 mt-6">
+    <div class="bg-purple-50 p-3 rounded-xl"><p class="text-xs font-bold">SKOR</p><p id="finalScore" class="font-fredoka text-2xl text-purple-700"></p></div>
+    <div class="bg-mint-soft p-3 rounded-xl"><p class="text-xs font-bold">BENAR</p><p id="finalCorrect" class="font-fredoka text-2xl text-green-700"></p></div>
+    <div class="bg-pink-50 p-3 rounded-xl"><p class="text-xs font-bold">SALAH</p><p id="finalWrong" class="font-fredoka text-2xl text-pink-700"></p></div>
+   </div>
+   <p id="motivation" class="font-bold text-purple-700 mt-6"></p>
+   <button onclick="makeCertificate()" class="btn-main mt-5"><i class="fa-solid fa-certificate mr-2"></i>Lihat Sertifikat</button>
+   <button onclick="exitQuiz()" class="btn-soft mt-5 ml-2">Kembali ke Level</button>
+  </div>
+  <div id="certificate" class="hidden card border-4 border-yellow-400 mt-5 text-center">
+   <div class="text-5xl">🏅</div>
+   <h2 class="font-fredoka text-3xl text-purple-700 mt-3">SERTIFIKAT PENCAPAIAN</h2>
+   <p class="mt-4 text-gray-500 font-bold">Diberikan kepada</p>
+   <h2 id="certName" class="font-fredoka text-3xl text-pink-600 mt-3"></h2>
+   <p class="mt-4 font-bold">Atas keberhasilannya menyelesaikan</p>
+   <h3 class="font-fredoka text-xl text-purple-700 mt-2">TKA MATEMATIKA KELAS IX</h3>
+   <p class="text-sm text-gray-600 mt-2">Keliling, Luas Bangun Datar, Juring dan Busur Lingkaran</p>
+   <p id="certScore" class="font-fredoka text-2xl mt-4"></p>
+   <p id="certDate" class="text-sm text-gray-500 mt-4"></p>
+   <p class="font-fredoka text-lg text-purple-700 mt-5">Tetap semangat belajar dan bernalar! 🌟</p>
+   <p class="text-xs text-gray-400 mt-5">Siti Sundari, M.Pd. • Math Adventure 2026</p>
+   <button onclick="window.print()" class="btn-main mt-5 no-print"><i class="fa-solid fa-print mr-2"></i>Cetak Sertifikat</button>
+  </div>
+ </div>
+</section>
+
+<!-- GAMES -->
+<section id="games" class="page">
+ <span class="text-purple-600 font-black text-sm">06 / PLAY & LEARN</span>
+ <h2 class="text-3xl font-fredoka font-bold mt-2">🎮 Math Matching Challenge</h2>
+ <p class="text-gray-500 font-bold mt-2 mb-5">Pasangkan rumus dengan konsep matematika yang tepat.</p>
+ <div class="card">
+  <div class="flex justify-between items-center">
+   <h3 class="font-fredoka text-xl text-purple-700">Pasangan Rumus</h3>
+   <span id="gameScore" class="font-extrabold text-purple-700">Pasangan: 0/5</span>
+  </div>
+  <p class="text-sm text-gray-500 font-bold mt-2">Pilih satu kartu konsep, lalu pilih kartu pasangan yang benar. Bisa dengan klik maupun sentuhan layar.</p>
+  <div class="grid grid-cols-2 gap-4 mt-6">
+   <div id="gameLeft" class="space-y-3"></div>
+   <div id="gameRight" class="space-y-3"></div>
+  </div>
+  <div id="gameFeedback" class="mt-5 text-center font-extrabold text-purple-700"></div>
+  <div class="flex gap-3 mt-5">
+   <button onclick="initGame()" class="btn-soft flex-1"><i class="fa-solid fa-rotate mr-2"></i>Ulangi</button>
+  </div>
+ </div>
+ <div class="card bg-yellow-50 mt-5">
+  <h3 class="font-fredoka text-xl">🧠 Tantangan Bonus</h3>
+  <p class="font-bold text-gray-600 mt-2">Jika sudut pusat suatu juring menjadi 2 kali lebih besar, sedangkan jari-jari tetap, apa yang terjadi pada luas juring dan panjang busurnya?</p>
+  <button onclick="reveal('bonusAnswer')" class="btn-soft mt-3">Lihat Jawaban</button>
+  <p id="bonusAnswer" class="hidden mt-3 font-extrabold text-purple-700">Keduanya menjadi 2 kali lebih besar karena luas juring dan panjang busur sebanding dengan sudut pusat ketika jari-jari tetap.</p>
+ </div>
+</section>
+
+<!-- KESIMPULAN -->
+<section id="kesimpulan" class="page">
+ <span class="text-purple-600 font-black text-sm">07 / REFLECT & REMEMBER</span>
+ <h2 class="text-3xl font-fredoka font-bold mt-2">🌟 Kesimpulan Pembelajaran</h2>
+ <div class="card mt-5">
+  <div class="space-y-4">
+   <div class="flex gap-3 items-start"><span class="text-2xl">📐</span><p class="font-bold text-gray-600">Keliling merupakan jumlah panjang sisi suatu bangun, sedangkan luas merupakan ukuran daerah yang ditempati bangun tersebut.</p></div>
+   <div class="flex gap-3 items-start"><span class="text-2xl">⭕</span><p class="font-bold text-gray-600">Keliling lingkaran adalah K = 2πr dan luas lingkaran adalah L = πr².</p></div>
+   <div class="flex gap-3 items-start"><span class="text-2xl">🍕</span><p class="font-bold text-gray-600">Luas juring adalah θ/360° × πr². Besarnya sebanding dengan sudut pusat dan kuadrat jari-jari.</p></div>
+   <div class="flex gap-3 items-start"><span class="text-2xl">🎡</span><p class="font-bold text-gray-600">Panjang busur adalah θ/360° × 2πr. Panjangnya sebanding dengan sudut pusat dan jari-jari.</p></div>
+   <div class="flex gap-3 items-start"><span class="text-2xl">🧩</span><p class="font-bold text-gray-600">Bangun gabungan diselesaikan dengan memecahnya menjadi bagian sederhana, kemudian menjumlahkan atau mengurangkan luasnya.</p></div>
+  </div>
+ </div>
+ <div class="card bg-purple-50 mt-5">
+  <h3 class="font-fredoka text-xl text-purple-700">⭐ Kunci Penalaran</h3>
+  <div class="grid md:grid-cols-2 gap-3 mt-4">
+   <div class="bg-white p-4 rounded-xl"><p class="font-bold">Sudut sama, jari-jari berbeda:</p><p class="math text-lg mt-2">Busur ∝ r</p><p class="math text-lg">Juring ∝ r²</p></div>
+   <div class="bg-white p-4 rounded-xl"><p class="font-bold">Jari-jari sama, sudut berbeda:</p><p class="math text-lg mt-2">Busur ∝ θ</p><p class="math text-lg">Juring ∝ θ</p></div>
+  </div>
+ </div>
+ <button onclick="showPage('kuis')" class="btn-main mt-6"><i class="fa-solid fa-trophy mr-2"></i>Uji Pemahaman Saya</button>
+</section>
+
+<!-- REFLEKSI -->
+<section id="refleksi" class="page">
+ <span class="text-purple-600 font-black text-sm">08 / COLLABORATIVE REFLECTION</span>
+ <h2 class="text-3xl font-fredoka font-bold mt-2">💌 Papan Refleksi Kolaboratif</h2>
+ <p class="text-gray-500 font-bold mt-2 mb-5">Bagikan pengalaman belajarmu. Setiap pemikiran berharga!</p>
+ <div class="grid lg:grid-cols-3 gap-5">
+  <div class="card lg:col-span-1">
+   <h3 class="font-fredoka text-xl text-purple-700">Tulis Refleksimu</h3>
+   <form id="reflectionForm" class="space-y-3 mt-4">
+    <div><label class="font-extrabold text-sm">Nama siswa</label><input id="reflectionName" class="form-input mt-1" placeholder="Contoh: Shaka" required></div>
+    <div><label class="font-extrabold text-sm">Perasaan / Kesan</label>
+     <select id="reflectionMood" class="form-input mt-1">
+      <option value="😊 Senang">😊 Senang</option>
+      <option value="🤩 Sangat antusias">🤩 Sangat antusias</option>
+      <option value="😌 Tenang">😌 Tenang</option>
+      <option value="🤔 Masih bingung">🤔 Masih bingung</option>
+      <option value="💪 Tertantang">💪 Tertantang</option>
+     </select>
+    </div>
+    <div><label class="font-extrabold text-sm">Pesan refleksi</label><textarea id="reflectionMessage" class="form-input mt-1" rows="4" placeholder="Hari ini saya belajar..." required></textarea></div>
+    <button type="submit" class="btn-main w-full"><i class="fa-solid fa-paper-plane mr-2"></i>Kirim Refleksi</button>
+   </form>
+   <div class="bg-yellow-50 rounded-xl p-3 mt-4">
+    <p class="text-xs text-gray-600 font-bold"><i class="fa-solid fa-circle-info mr-1"></i>Refleksi disimpan pada perangkat ini. Jika URL Apps Script telah dikonfigurasi, data juga dikirim ke Google Spreadsheet.</p>
+   </div>
+   <div class="mt-5 border-t pt-4">
+    <h4 class="font-fredoka text-lg">⚙️ Koneksi Spreadsheet</h4>
+    <input id="gasUrl" class="form-input mt-2 text-xs" placeholder="Masukkan URL Web App Apps Script">
+    <button onclick="saveGasUrl()" class="btn-soft mt-2 w-full text-sm">Simpan URL Backend</button>
+    <p id="gasStatus" class="text-xs text-gray-500 font-bold mt-2">Mode penyimpanan lokal aktif.</p>
+   </div>
+  </div>
+  <div class="lg:col-span-2">
+   <div class="card bg-[#f2f0fc] min-h-[420px]">
+    <div class="flex justify-between items-center mb-4">
+     <div><h3 class="font-fredoka text-xl text-purple-700">Dinding Inspirasi ✨</h3><p class="text-xs text-gray-500 font-bold">Catatan dari teman-temanmu</p></div>
+     <span class="bg-white px-3 py-2 rounded-full text-xs font-black" id="reflectionCount">0 Catatan</span>
+    </div>
+    <div id="stickyBoard" class="grid sm:grid-cols-2 gap-4">
+     <div class="sticky"><b>Shaka 🌟</b><p class="text-xs font-bold text-gray-500 mt-1">😊 Senang</p><p class="mt-3 text-sm font-bold">Saya belajar bahwa luas juring bergantung pada sudut pusat dan jari-jari.</p></div>
+     <div class="sticky"><b>Haflasea 🌈</b><p class="text-xs font-bold text-gray-500 mt-1">🤩 Sangat antusias</p><p class="mt-3 text-sm font-bold">Simulasi lingkarannya seru! Saya jadi lebih paham panjang busur.</p></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+</main>
+
+<footer class="mt-10 bg-[#332d57] text-white py-7">
+ <div class="max-w-7xl mx-auto px-4 text-center">
+  <div class="text-2xl">📐 ✨ ⭕</div>
+  <h3 class="font-fredoka text-xl mt-2">Math Adventure – TKA Matematika</h3>
+  <p class="text-sm text-purple-200 mt-2">Belajar • Bernalar • Berkolaborasi • Berkarya</p>
+  <p class="text-sm font-bold mt-4">by Siti Sundari, M.Pd.</p>
+  <p class="text-xs text-purple-200 mt-2">Copyright © 2026. All Rights Reserved.</p>
+ </div>
+</footer>
+
+<script>
+// ========================================
+// 1. NAVIGASI SPA
+// ========================================
+function showPage(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ const btn=document.querySelector('[data-page="'+id+'"]');
+ if(btn)btn.classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+ playTone('click');
+}
+
+// ========================================
+// 2. AUDIO SYNTHESIZER
+// ========================================
+let audioOn=true;
+let audioContext=null;
+function tone(freq,duration,type='sine',volume=.08){
+ if(!audioOn)return;
+ try{
+  audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();
+  if(audioContext.state==='suspended')audioContext.resume();
+  const osc=audioContext.createOscillator();
+  const gain=audioContext.createGain();
+  osc.type=type;
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(volume,audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
+  osc.connect(gain);gain.connect(audioContext.destination);
+  osc.start();osc.stop(audioContext.currentTime+duration);
+ }catch(e){}
+}
+function playTone(type){
+ if(type==='click')tone(500,.08,'sine',.04);
+ if(type==='correct'){tone(660,.12);setTimeout(()=>tone(880,.18),100);}
+ if(type==='wrong')tone(180,.22,'triangle',.06);
+}
+function toggleAudio(){
+ audioOn=!audioOn;
+ const b=document.getElementById('audioBtn');
+ b.innerHTML=audioOn?'<i class="fa-solid fa-volume-high"></i> Audio ON':'<i class="fa-solid fa-volume-xmark"></i> Audio OFF';
+ b.className=audioOn?'bg-mint-soft text-green-700 rounded-xl px-3 py-2 font-extrabold text-sm':'bg-gray-100 text-gray-500 rounded-xl px-3 py-2 font-extrabold text-sm';
+ if(audioOn)playTone('correct');
+}
+
+// ========================================
+// 3. INTERAKSI PEMANTIK
+// ========================================
+function reveal(id){
+ document.getElementById(id).classList.toggle('hidden');
+ playTone('click');
+}
+let focusTimer=null;
+function mindful(){
+ let n=10;
+ const el=document.getElementById('mindfulText');
+ clearInterval(focusTimer);
+ el.textContent='Tarik napas... '+n;
+ focusTimer=setInterval(()=>{
+  n--;
+  el.textContent=n>0?'Fokus dan bernapas... '+n:'✨ Hebat! Pikiran siap belajar.';
+  if(n<=0)clearInterval(focusTimer);
+ },1000);
+}
+
+// ========================================
+// 4. TAB MATERI
+// ========================================
+function materialTab(id,btn){
+ document.querySelectorAll('.subtab').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ btn.classList.add('active');
+ playTone('click');
+}
+
+// ========================================
+// 5. SIMULASI LINGKARAN
+// ========================================
+const PI=Math.PI;
+const fmt=n=>Number(n).toLocaleString('id-ID',{maximumFractionDigits:2});
+function updateSimulation(){
+ const r=Number(document.getElementById('radius').value);
+ const a=Number(document.getElementById('angle').value);
+ document.getElementById('radiusLabel').textContent=r;
+ document.getElementById('angleLabel').textContent=a;
+ const area=PI*r*r;
+ const circ=2*PI*r;
+ const sector=area*a/360;
+ const arc=circ*a/360;
+ document.getElementById('fullArea').textContent=fmt(area);
+ document.getElementById('fullCirc').textContent=fmt(circ);
+ document.getElementById('sectorArea').textContent=fmt(sector);
+ document.getElementById('arcLength').textContent=fmt(arc);
+ document.getElementById('simInsight').textContent=
+  'Sudut pusat '+a+'° merupakan '+fmt(a/360*100)+'% dari satu putaran. Juring menempati '+fmt(sector)+' cm² dan panjang busurnya '+fmt(arc)+' cm.';
+ drawCircle(r,a);
+}
+function drawCircle(r,a){
+ const cx=160,cy=160,R=112;
+ const rad=a*PI/180;
+ const x=cx+R*Math.sin(rad);
+ const y=cy-R*Math.cos(rad);
+ const large=a>180?1:0;
+ let path='';
+ if(a>=360){
+  path=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#ed9dc5" opacity=".8"/>`;
+ }else{
+  path=`<path d="M ${cx} ${cy} L ${cx} ${cy-R} A ${R} ${R} 0 ${large} 1 ${x} ${y} Z" fill="#ed9dc5" opacity=".85"/>`;
+ }
+ document.getElementById('simCircle').innerHTML=`
+ <circle cx="${cx}" cy="${cy}" r="${R}" fill="#eeeaff" stroke="#6957c8" stroke-width="3"/>
+ ${path}
+ <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#6957c8" stroke-width="3"/>
+ <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy-R}" stroke="#6957c8" stroke-width="3"/>
+ <line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#6957c8" stroke-width="3"/>
+ <circle cx="${cx}" cy="${cy}" r="4" fill="#45377f"/>
+ <text x="170" y="148" font-size="14" fill="#45377f" font-weight="bold">θ = ${a}°</text>
+ <text x="165" y="60" font-size="13" fill="#6957c8" font-weight="bold">r = ${r} cm</text>`;
+}
+function resetSimulation(){
+ document.getElementById('radius').value=14;
+ document.getElementById('angle').value=90;
+ updateSimulation();
+}
+function compareCircles(){
+ const r1=Number(document.getElementById('ra').value);
+ const a1=Number(document.getElementById('aa').value);
+ const r2=Number(document.getElementById('rb').value);
+ const a2=Number(document.getElementById('ab').value);
+ const out=document.getElementById('compareResult');
+ if(![r1,a1,r2,a2].every(Number.isFinite)||r1<=0||r2<=0||a1<=0||a1>360||a2<=0||a2>360){
+  out.innerHTML='<p class="text-red-600 font-bold">Masukkan nilai jari-jari dan sudut yang valid.</p>';return;
+ }
+ const l1=PI*r1*r1*a1/360,l2=PI*r2*r2*a2/360;
+ const s1=2*PI*r1*a1/360,s2=2*PI*r2*a2/360;
+ out.innerHTML=`
+ <div class="bg-purple-50 rounded-xl p-4">
+ <h4 class="font-fredoka text-lg text-purple-700">Hasil Perbandingan</h4>
+ <div class="grid grid-cols-2 gap-3 mt-3">
+ <div class="bg-white p-3 rounded-xl"><b>Juring A</b><p>Luas: ${fmt(l1)} cm²</p><p>Busur: ${fmt(s1)} cm</p></div>
+ <div class="bg-white p-3 rounded-xl"><b>Juring B</b><p>Luas: ${fmt(l2)} cm²</p><p>Busur: ${fmt(s2)} cm</p></div>
+ </div>
+ <p class="font-bold mt-3">Perbandingan luas A : B = ${fmt(l1/l2)} : 1</p>
+ <p class="font-bold">Perbandingan busur A : B = ${fmt(s1/s2)} : 1</p>
+ <p class="text-sm mt-2 text-gray-600 font-bold">${l1>l2?'Luas juring A lebih besar.':l1<l2?'Luas juring B lebih besar.':'Kedua luas juring sama.'} ${s1>s2?'Busur A lebih panjang.':s1<s2?'Busur B lebih panjang.':'Kedua busur sama panjang.'}</p>
+ </div>`;
+}
+updateSimulation();
+
+// ========================================
+// 6. BANK SOAL KUIS
+// Format: [pertanyaan, pilihan, jawaban benar, penjelasan]
+// ========================================
+const questions={
+easy:[
+['Rumus keliling lingkaran dengan jari-jari r adalah ...',['πr²','2πr','πr'],'B','Keliling lingkaran = 2πr. Rumus πr² digunakan untuk luas lingkaran.'],
+['Sebuah lingkaran memiliki jari-jari 7 cm. Diameternya adalah ...',['7 cm','14 cm','21 cm','49 cm'],'B','Diameter = 2 × jari-jari = 2 × 7 = 14 cm.'],
+['Luas persegi dengan sisi 8 cm adalah ...',['16 cm²','32 cm²','64 cm²','80 cm²'],'C','Luas persegi = s × s = 8 × 8 = 64 cm².'],
+['Keliling persegi panjang berukuran 10 cm dan 5 cm adalah ...',['15 cm','30 cm','50 cm','25 cm'],'B','K = 2(p+l) = 2(10+5) = 30 cm.'],
+['Nilai π yang sering digunakan untuk perhitungan lingkaran adalah ...',['2,14','3,14','4,13','3,41'],'B','Nilai pendekatan π adalah 3,14 atau 22/7.'],
+['Sudut satu putaran penuh lingkaran adalah ...',['90°','180°','270°','360°'],'D','Satu putaran penuh memiliki sudut 360 derajat.'],
+['Luas lingkaran berjari-jari 7 cm (π = 22/7) adalah ...',['44 cm²','154 cm²','49 cm²','308 cm²'],'B','L = 22/7 × 7 × 7 = 154 cm².'],
+['Juring lingkaran dibatasi oleh ...',['Dua diameter','Dua jari-jari dan satu busur','Dua tali busur','Empat sisi'],'B','Juring merupakan daerah yang dibatasi dua jari-jari dan sebuah busur.'],
+['Sudut 90° merupakan ... dari satu putaran lingkaran.',['1/2','1/3','1/4','3/4'],'C','90/360 = 1/4.'],
+['Panjang busur merupakan bagian dari ...',['Luas persegi','Keliling lingkaran','Diameter persegi','Luas segitiga'],'B','Busur adalah bagian lengkung dari keliling lingkaran.']
+],
+medium:[
+['Jari-jari lingkaran 14 cm dan sudut pusat 90°. Luas juringnya (π=22/7) adalah ...',['77 cm²','154 cm²','308 cm²','616 cm²'],'B','L = 90/360 × 22/7 × 14² = 154 cm².'],
+['Lingkaran berjari-jari 21 cm memiliki sudut pusat 60°. Panjang busurnya (π=22/7) adalah ...',['11 cm','22 cm','33 cm','44 cm'],'B','s = 60/360 × 2 × 22/7 × 21 = 22 cm.'],
+['Dua juring memiliki jari-jari sama. Sudut A = 60° dan B = 120°. Perbandingan luas A : B adalah ...',['1:1','1:2','2:1','1:4'],'B','Pada jari-jari sama, luas juring sebanding dengan sudut pusat.'],
+['Jari-jari lingkaran diperbesar 2 kali. Luas lingkaran menjadi ...',['2 kali','3 kali','4 kali','8 kali'],'C','Luas sebanding dengan r². Jika r menjadi 2r, luas menjadi 4 kali.'],
+['Jari-jari lingkaran 7 cm. Panjang busur sudut 180° adalah ... (π=22/7)',['11 cm','22 cm','44 cm','154 cm'],'C','s = 180/360 × 2 × 22/7 × 7 = 22 cm.'],
+['Taman persegi panjang 15 m × 10 m. Luasnya adalah ...',['25 m²','50 m²','150 m²','300 m²'],'C','Luas = panjang × lebar = 15 × 10 = 150 m².'],
+['Dua juring bersudut sama. Jari-jari A = 7 cm dan B = 14 cm. Perbandingan luas A : B adalah ...',['1:2','1:4','2:1','1:8'],'B','Perbandingan luas = 7² : 14² = 49 : 196 = 1 : 4.'],
+['Sebuah lingkaran berjari-jari 10 cm memiliki sudut pusat 72°. Luas juringnya adalah ...',['10π cm²','20π cm²','36π cm²','72π cm²'],'A','L = 72/360 × π × 100 = 20π cm². Opsi yang tepat adalah 20π, yaitu B.'],
+['Jika sudut pusat menjadi 3 kali dan jari-jari tetap, panjang busur menjadi ...',['1/3 kali','2 kali','3 kali','9 kali'],'C','Panjang busur sebanding dengan sudut pusat jika jari-jari tetap.'],
+['Sebuah bangun terdiri dari persegi panjang 10×6 cm dan setengah lingkaran berjari-jari 3 cm. Luas totalnya adalah ...',['60+4,5π cm²','60+9π cm²','30+9π cm²','60+18π cm²'],'A','Luas total = 10×6 + 1/2 × π × 3² = 60 + 4,5π cm².']
+],
+hard:[
+['Dua juring memiliki luas sama. Juring A memiliki r=6 cm dan sudut 120°. Jika juring B berjari-jari 12 cm, sudutnya adalah ...',['15°','30°','60°','90°'],'B','Kesamaan luas berarti θA × rA² = θB × rB². θB = 120 × 36/144 = 30°.'],
+['Lingkaran A berjari-jari 7 cm dan sudut 120°. Lingkaran B berjari-jari 14 cm. Agar panjang busurnya sama, sudut B adalah ...',['15°','30°','45°','60°'],'B','θA × rA = θB × rB. θB = 120 × 7/14 = 60°. Jawaban yang benar adalah D.'],
+['Jika jari-jari lingkaran menjadi 3 kali semula dan sudut pusat menjadi setengahnya, luas juring berubah menjadi ...',['1,5 kali','3 kali','4,5 kali','9 kali'],'C','Faktor perubahan luas = 3² × 1/2 = 4,5 kali.'],
+['Juring A memiliki r=14 cm, θ=90°. Juring B memiliki r=7 cm, θ=180°. Perbandingan luas A:B adalah ...',['1:1','2:1','1:2','4:1'],'B','Luas A:B = (90×14²):(180×7²) = 2:1.'],
+['Panjang busur A adalah 22 cm dengan sudut 90°. Jika jari-jari tetap dan sudut diubah menjadi 225°, panjang busur baru adalah ...',['44 cm','55 cm','66 cm','88 cm'],'B','Panjang busur baru = 22 × 225/90 = 55 cm.'],
+['Sebuah taman terdiri atas persegi sisi 14 m dan setengah lingkaran berdiameter 14 m. Luas totalnya (π=22/7) adalah ...',['196 m²','231 m²','273 m²','294 m²'],'C','Luas = 14² + 1/2 × 22/7 × 7² = 196 + 77 = 273 m².'],
+['Juring A dan B memiliki panjang busur sama. Jari-jari A = 10 cm dan B = 20 cm. Jika sudut A 120°, sudut B adalah ...',['30°','60°','120°','240°'],'B','θA × rA = θB × rB, sehingga θB = 120 × 10/20 = 60°.'],
+['Sebuah lingkaran memiliki luas 616 cm² (π=22/7). Jari-jarinya adalah ...',['7 cm','14 cm','21 cm','28 cm'],'B','r² = 616 × 7/22 = 196, sehingga r = 14 cm.'],
+['Dua juring memiliki sudut sama. Perbandingan jari-jari A:B adalah 2:3. Perbandingan luasnya adalah ...',['2:3','4:9','3:2','8:27'],'B','Luas juring sebanding dengan kuadrat jari-jari jika sudut sama. 2²:3² = 4:9.'],
+['Sebuah roda berjari-jari 35 cm berputar 20 kali. Jarak tempuh tepi roda adalah ... (π=22/7)',['22 m','33 m','44 m','55 m'],'C','Keliling = 2×22/7×35 = 220 cm. Jarak = 220×20 = 4400 cm = 44 m.']
+]
+};
+
+// ========================================
+// 7. ENGINE KUIS
+// ========================================
+let currentLevel='',currentIndex=0,score=0,correctCount=0,wrongCount=0,answered=false,student='';
+const levelNames={easy:'MUDAH',medium:'SEDANG',hard:'SULIT'};
+function startQuiz(level){
+ student=document.getElementById('studentName').value.trim()||'Peserta Didik';
+ currentLevel=level;
+ currentIndex=0;score=0;correctCount=0;wrongCount=0;answered=false;
+ document.getElementById('quizStart').classList.add('hidden');
+ document.getElementById('quizResult').classList.add('hidden');
+ document.getElementById('quizPlay').classList.remove('hidden');
+ document.getElementById('certificate').classList.add('hidden');
+ document.getElementById('quizLevel').textContent=levelNames[level];
+ loadQuestion();
+}
+function loadQuestion(){
+ const q=questions[currentLevel][currentIndex];
+ answered=false;
+ document.getElementById('questionTag').textContent='SOAL '+(currentIndex+1);
+ document.getElementById('questionText').textContent=q[0];
+ document.getElementById('quizScore').textContent=score;
+ document.getElementById('quizCounter').textContent='Soal '+(currentIndex+1)+'/10';
+ document.getElementById('quizProgress').style.width=(currentIndex/10*100)+'%';
+ document.getElementById('quizPercentage').textContent=(currentIndex*10)+'%';
+ document.getElementById('feedback').classList.add('hidden');
+ document.getElementById('nextQuestion').classList.add('hidden');
+ const wrap=document.getElementById('questionOptions');
+ wrap.innerHTML='';
+ q[1].forEach((opt,i)=>{
+  const letter=String.fromCharCode(65+i);
+  const b=document.createElement('button');
+  b.className='option';
+  b.textContent=letter+'. '+opt;
+  b.onclick=()=>answerQuestion(letter,b);
+  wrap.appendChild(b);
+ });
+}
+function answerQuestion(letter,button){
+ if(answered)return;
+ answered=true;
+ const q=questions[currentLevel][currentIndex];
+ const correct=letter===q[2];
+ const buttons=[...document.querySelectorAll('#questionOptions button')];
+ buttons.forEach(b=>{
+  b.disabled=true;
+  if(b.textContent.startsWith(q[2]+'.'))b.classList.add('correct');
+ });
+ const feedback=document.getElementById('feedback');
+ feedback.classList.remove('hidden');
+ if(correct){
+  score+=10;correctCount++;
+  feedback.className='p-4 rounded-xl mt-4 bg-green-50 text-green-800';
+  feedback.innerHTML='<b>🎉 Hebat! Jawabanmu benar.</b><p class="mt-2 text-sm">'+q[3]+'</p>';
+  playTone('correct');
+ }else{
+  wrongCount++;
+  button.classList.add('wrong');
+  feedback.className='p-4 rounded-xl mt-4 bg-red-50 text-red-800';
+  feedback.innerHTML='<b>💡 Belum tepat. Yuk, pahami kembali!</b><p class="mt-2 text-sm">Jawaban benar: '+q[2]+'. '+q[1][q[2].charCodeAt(0)-65]+'</p><p class="mt-2 text-sm">'+q[3]+'</p>';
+  playTone('wrong');
+ }
+ document.getElementById('quizScore').textContent=score;
+ document.getElementById('nextQuestion').classList.remove('hidden');
+}
+function nextQuizQuestion(){
+ currentIndex++;
+ if(currentIndex>=10){finishQuiz();return;}
+ loadQuestion();
+ playTone('click');
+}
+function finishQuiz(){
+ document.getElementById('quizPlay').classList.add('hidden');
+ document.getElementById('quizResult').classList.remove('hidden');
+ document.getElementById('quizProgress').style.width='100%';
+ document.getElementById('resultName').textContent='Peserta: '+student;
+ document.getElementById('resultLevel').textContent='Level '+levelNames[currentLevel];
+ document.getElementById('finalScore').textContent=score;
+ document.getElementById('finalCorrect').textContent=correctCount;
+ document.getElementById('finalWrong').textContent=wrongCount;
+ document.getElementById('motivation').textContent=
+ score===100?'Luar biasa! Kamu Math Champion! 🌟':
+ score>=70?'Hebat! Terus tingkatkan kemampuan bernalarmu! 💪':
+ score>=50?'Bagus! Pelajari kembali bagian yang belum dikuasai. 📚':
+ 'Jangan menyerah! Kesalahan adalah bagian dari belajar. 🌱';
+ if(window.confetti)confetti({particleCount:160,spread:100,origin:{y:.65}});
+ playTone('correct');
+}
+function exitQuiz(){
+ document.getElementById('quizPlay').classList.add('hidden');
+ document.getElementById('quizResult').classList.add('hidden');
+ document.getElementById('quizStart').classList.remove('hidden');
+}
+function makeCertificate(){
+ document.getElementById('certificate').classList.remove('hidden');
+ document.getElementById('certName').textContent=student;
+ document.getElementById('certScore').textContent='Skor: '+score+'/100';
+ document.getElementById('certDate').textContent='Tanggal: '+new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+ document.getElementById('certificate').scrollIntoView({behavior:'smooth'});
+ if(window.confetti)confetti({particleCount:200,spread:120});
+}
+
+// ========================================
+// 8. GAMES MATCHING
+// ========================================
+const pairs=[
+ ['Keliling lingkaran','2πr'],
+ ['Luas lingkaran','πr²'],
+ ['Luas juring','θ/360 × πr²'],
+ ['Panjang busur','θ/360 × 2πr'],
+ ['Diameter','2r']
+];
+let selectedLeft=null,selectedRight=null,matched=new Set(),gameBusy=false;
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+function initGame(){
+ selectedLeft=null;selectedRight=null;matched=new Set();gameBusy=false;
+ document.getElementById('gameFeedback').textContent='Pilih pasangan yang tepat!';
+ const left=document.getElementById('gameLeft');
+ const right=document.getElementById('gameRight');
+ left.innerHTML='';right.innerHTML='';
+ shuffle(pairs).forEach((p,i)=>{
+  const b=document.createElement('button');
+  b.className='option text-center text-sm min-h-[75px]';
+  b.textContent=p[0];b.dataset.id=p[0];
+  b.onclick=()=>selectGame('left',p[0],b);
+  left.appendChild(b);
+ });
+ shuffle(pairs).forEach((p)=>{
+  const b=document.createElement('button');
+  b.className='option text-center text-sm min-h-[75px]';
+  b.textContent=p[1];b.dataset.id=p[0];
+  b.onclick=()=>selectGame('right',p[0],b);
+  right.appendChild(b);
+ });
+ updateGameScore();
+}
+function selectGame(side,id,button){
+ if(gameBusy||matched.has(id))return;
+ if(side==='left'){
+  document.querySelectorAll('#gameLeft button').forEach(b=>b.classList.remove('wrong'));
+  selectedLeft=id;
+  document.querySelectorAll('#gameLeft button').forEach(b=>{if(b.dataset.id===id)b.classList.add('wrong');});
+ }else{
+  document.querySelectorAll('#gameRight button').forEach(b=>b.classList.remove('wrong'));
+  selectedRight=id;
+  document.querySelectorAll('#gameRight button').forEach(b=>{if(b.dataset.id===id)b.classList.add('wrong');});
+ }
+ if(selectedLeft!==null&&selectedRight!==null){
+  gameBusy=true;
+  setTimeout(()=>{
+   if(selectedLeft===selectedRight){
+    matched.add(selectedLeft);
+    document.querySelectorAll('#gameLeft button,#gameRight button').forEach(b=>{
+     if(b.dataset.id===selectedLeft){
+      b.classList.remove('wrong');b.classList.add('correct');b.disabled=true;
+     }
+    });
+    document.getElementById('gameFeedback').textContent='✨ Benar! Pasangan cocok.';
+    playTone('correct');
+   }else{
+    document.getElementById('gameFeedback').textContent='Belum cocok. Coba pikirkan kembali!';
+    playTone('wrong');
+    document.querySelectorAll('#gameLeft button,#gameRight button').forEach(b=>b.classList.remove('wrong'));
+   }
+   selectedLeft=null;selectedRight=null;gameBusy=false;
+   updateGameScore();
+   if(matched.size===pairs.length){
+    document.getElementById('gameFeedback').textContent='🏆 Sempurna! Semua pasangan berhasil ditemukan!';
+    if(window.confetti)confetti({particleCount:120,spread:90});
+   }
+  },350);
+ }
+}
+function updateGameScore(){
+ document.getElementById('gameScore').textContent='Pasangan: '+matched.size+'/'+pairs.length;
+}
+initGame();
+
+// ========================================
+// 9. REFLEKSI DIGITAL + GOOGLE SHEETS
+// ========================================
+const LOCAL_KEY='mathAdventureReflections2026';
+const GAS_KEY='mathAdventureGasUrl';
+let reflections=[];
+try{reflections=JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]');}catch(e){reflections=[];}
+function saveGasUrl(){
+ const url=document.getElementById('gasUrl').value.trim();
+ if(url&&!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(url)){
+  document.getElementById('gasStatus').textContent='URL tidak valid. Gunakan URL Web App Apps Script.';
+  return;
+ }
+ localStorage.setItem(GAS_KEY,url);
+ document.getElementById('gasStatus').textContent=url?'Backend Spreadsheet siap digunakan.':'Mode penyimpanan lokal aktif.';
+ playTone('correct');
+}
+document.getElementById('gasUrl').value=localStorage.getItem(GAS_KEY)||'';
+if(localStorage.getItem(GAS_KEY)){
+ document.getElementById('gasStatus').textContent='URL backend tersimpan.';
+}
+function renderReflections(){
+ const board=document.getElementById('stickyBoard');
+ board.innerHTML='';
+ const examples=[
+  {name:'Shaka',mood:'😊 Senang',message:'Saya belajar bahwa luas juring bergantung pada sudut pusat dan jari-jari.'},
+  {name:'Haflasea',mood:'🤩 Sangat antusias',message:'Simulasi lingkarannya seru! Saya jadi lebih paham panjang busur.'}
+ ];
+ [...examples,...reflections].forEach(r=>{
+  const div=document.createElement('div');
+  div.className='sticky';
+  const name=document.createElement('b');name.textContent=r.name+' 🌟';
+  const mood=document.createElement('p');mood.className='text-xs font-bold text-gray-500 mt-1';mood.textContent=r.mood;
+  const msg=document.createElement('p');msg.className='mt-3 text-sm font-bold';msg.textContent=r.message;
+  div.append(name,mood,msg);
+  board.appendChild(div);
+ });
+ document.getElementById('reflectionCount').textContent=(examples.length+reflections.length)+' Catatan';
+}
+document.getElementById('reflectionForm').addEventListener('submit',async function(e){
+ e.preventDefault();
+ const entry={
+  name:document.getElementById('reflectionName').value.trim(),
+  mood:document.getElementById('reflectionMood').value,
+  message:document.getElementById('reflectionMessage').value.trim(),
+  date:new Date().toISOString()
+ };
+ if(!entry.name||!entry.message)return;
+ reflections.push(entry);
+ try{localStorage.setItem(LOCAL_KEY,JSON.stringify(reflections));}catch(e){}
+ renderReflections();
+ this.reset();
+ playTone('correct');
+ const url=localStorage.getItem(GAS_KEY);
+ if(url){
+  document.getElementById('gasStatus').textContent='Mengirim data ke Spreadsheet...';
+  try{
+   await fetch(url,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(entry)
+   });
+   document.getElementById('gasStatus').textContent='Data dikirim. Periksa Google Spreadsheet.';
+  }catch(err){
+   document.getElementById('gasStatus').textContent='Gagal mengirim. Data tetap tersimpan lokal.';
+  }
+ }else{
+  document.getElementById('gasStatus').textContent='Tersimpan di perangkat. Hubungkan backend untuk Spreadsheet.';
+ }
+});
+renderReflections();
+
+// ========================================
+// 10. INISIALISASI
+// ========================================
+document.addEventListener('click',function(e){
+ if(e.target.closest('button')){}
+});
+</script>
+
+<!--
+====================================================
+BACKEND GOOGLE APPS SCRIPT - GOOGLE SPREADSHEET
+====================================================
+
+Agar papan refleksi tersimpan ke Google Spreadsheet:
+
+1. Buat Google Spreadsheet baru.
+2. Pilih Extensions > Apps Script.
+3. Salin kode Apps Script di bawah ini ke Code.gs.
+4. Ganti SPREADSHEET_ID dengan ID Spreadsheet milik Anda.
+5. Deploy > New deployment > Web app.
+6. Execute as: Me.
+7. Who has access: Anyone.
+8. Salin URL Web App yang berakhiran /exec.
+9. Masukkan URL tersebut pada bagian Koneksi Spreadsheet
+   di menu Papan Refleksi.
+
+KODE BACKEND (SALIN KE Code.gs):
+
+----------------------------------------------------
+
+const SPREADSHEET_ID = 'GANTI_DENGAN_ID_SPREADSHEET';
+const SHEET_NAME = 'Refleksi Siswa';
+
+function getSheet() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+    sheet.appendRow([
+      'Timestamp',
+      'Nama Siswa',
+      'Perasaan / Kesan',
+      'Pesan Refleksi'
+    ]);
+  }
+
+  return sheet;
+}
+
+function doGet() {
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      status: 'success',
+      message: 'Backend Refleksi Matematika aktif.'
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+
+    const sheet = getSheet();
+
+    sheet.appendRow([
+      new Date(),
+      data.name || '',
+      data.mood || '',
+      data.message || ''
+    ]);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: 'success',
+        message: 'Refleksi berhasil disimpan.'
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: 'error',
+        message: error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+----------------------------------------------------
+
+CATATAN:
+Kode backend dijalankan di Google Apps Script,
+bukan di dalam browser. HTML tetap satu file.
+Pengiriman menggunakan no-cors sehingga browser tidak
+dapat membaca respons server secara langsung.
+Periksa Spreadsheet untuk memastikan data diterima.
+
+====================================================
+-->
+</body>
+</html>
